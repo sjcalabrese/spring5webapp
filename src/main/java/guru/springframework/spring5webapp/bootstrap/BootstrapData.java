@@ -29,30 +29,40 @@ public class BootstrapData implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        System.out.println("Sarted in Bootstrap");
+
         Author eric = new Author("Eric", "Evans");
         Book ddd = new Book("Domain Drivern Design", "123123");
+        Publisher guruPublishing = new Publisher("guruPublishing", "123 mySteet", "nowhere", "virginia", "12321");
+
+
+        publisherRrepository.save(guruPublishing);
+
         eric.getBooks().add(ddd);
         ddd.getAuthors().add(eric);
+        ddd.setPublisher(guruPublishing);
+
+        guruPublishing.getBooks().add(ddd);
 
         authorRepository.save(eric);
         bookRepository.save(ddd);
+        publisherRrepository.save(guruPublishing);
 
         Author rod = new Author("Rod", "Johnson");
         Book noEJB = new Book("j2ee Development without EJB", "39321323412");
 
         rod.getBooks().add(noEJB);
         noEJB.getAuthors().add(rod);
+        noEJB.setPublisher(guruPublishing);
+        guruPublishing.getBooks().add(noEJB);
 
         authorRepository.save(rod);
         bookRepository.save(noEJB);
-
-        Publisher guruPublishing = new Publisher("guruPublishing", "123 mySteet", "nowhere", "virginia", "12321");
-
         publisherRrepository.save(guruPublishing);
 
 
-        System.out.println("Sarted in Bootstrap");
         System.out.println("number of books: " + bookRepository.count());
         System.out.println("Number of publishers: " + publisherRrepository.count());
+        System.out.println("Publishers number of books: " + guruPublishing.getBooks().size());
     }
 }
